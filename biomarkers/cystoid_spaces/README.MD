@@ -82,9 +82,10 @@ cystoid_spaces/
 
 ---
 
-## 9. References
+## References
 
 1. Nouri, Pr. et al., “Prevalence and management of diabetic macular edema in Algeria,” *Journal of Ophthalmology*, 2021
 2. Kaggle: [Intraretinal Cystoid Fluid OCT Dataset](https://www.kaggle.com/datasets/zeeshanahmed13/intraretinal-cystoid-fluid)
+
 
 
