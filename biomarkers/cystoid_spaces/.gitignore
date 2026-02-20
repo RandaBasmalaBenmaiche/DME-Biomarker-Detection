@@ -1,0 +1,7 @@
+data\hospital_75\images
+data\hospital_324\annotations
+data\hospital_324\images
+data\hospital_324\data.txt
+data\hospital_324\data.yaml
+data\kaggle\images-testing-labels
+data\kaggle\images-training-labels

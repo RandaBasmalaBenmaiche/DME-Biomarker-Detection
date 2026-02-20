@@ -37,7 +37,7 @@ This dataset is composed of **three complementary sources**:
 
 * **Source:** [Intraretinal Cystoid Fluid OCT Dataset](https://www.kaggle.com/datasets/zeeshanahmed13/intraretinal-cystoid-fluid)
 * **Images:** 1609 OCT scans
-* **Annotations:** 333 scans manually annotated for cystoid spaces
+* **Annotations:** 1609 scans manually annotated for cystoid spaces
 * **License:** Attribution-NonCommercial-ShareAlike 4.0 International
 * **Notes:** This external dataset provides **large-scale supplementary images** to improve model generalization across varied imaging conditions.
 
@@ -49,7 +49,7 @@ This dataset is composed of **three complementary sources**:
 | ---------------------- | ----------- | --------------- | --------------- | ------------------ |
 | Tizi Ouzou – 324 scans | 324         | 128             | 11 patients     | 24 patients        |
 | Tizi Ouzou – 75 scans  | 75          | 72              | N/A             | N/A                |
-| Kaggle – 1609 scans    | 1609        | 333             | N/A             | N/A                |
+| Kaggle – 1609 scans    | 1609        | 1609            | N/A             | N/A                |
 
 > “Full annotation” indicates that **all scans of the patient were annotated**, while “partial annotation” means **only some scans were annotated**. This limitation reflects the practical constraints of hospital clinical staff.
 
@@ -76,7 +76,7 @@ cystoid_spaces/
 ```
 ## Ethical Considerations and Licensing
 
-* **Hospital Datasets:** Anonymized and used with patient consent for research purposes
+* **Hospital Datasets:** Anonymized  for research purposes
 * **Kaggle Dataset:** Non-commercial research use under [Attribution-NonCommercial-ShareAlike 4.0 International](https://www.kaggle.com/datasets/zeeshanahmed13/intraretinal-cystoid-fluid)
 * **Disclaimer:** Intended **strictly for research and educational purposes**, not for clinical diagnosis
 
