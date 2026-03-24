@@ -1,0 +1,11 @@
+train_images: "/content/split_output/split_output/train/images"
+train_masks: "/content/split_output/split_output/train/masks"
+val_images: "/content/split_output/split_output/val/images"
+val_masks: "/content/split_output/split_output/val/masks"
+device: "cuda"  # or "cpu"
+in_channels: 1
+out_classes: 1
+batch_size: 16
+lr: 1e-4
+epochs: 3
+checkpoint_dir: "outputs/checkpoints"

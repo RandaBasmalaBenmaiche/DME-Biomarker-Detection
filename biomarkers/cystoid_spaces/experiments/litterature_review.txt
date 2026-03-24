@@ -1,0 +1,62 @@
+1) trying to find best models
+
+
+
+questions and notes:
+what is few shots training?
+what is unsupervised and semi supervised kifech f cv??
+there is a trend to use Transformers attentions with cnn , why? 
+what is the innovation in transformers / attention ? 
+OCT imaging is very "delicate" 
+
+medical image models
+
+dataset:
+
+best models: 
+- https://arxiv.org/abs/2404.10156v2 ## attention based models are huge, theirs is small attention based and lightweight on 3D
+- https://arxiv.org/abs/1810.11654v3 ## They propose a 3D encoder–decoder segmentation network for brain tumor subregion segmentation in MRI.
+- https://arxiv.org/abs/1906.02849v3 ##They enhance CNN segmentation with guided attention to better capture global context and improve reliability.
+- https://ieeexplore.ieee.org/document/10222602##They improve 3D U-Net by adding a dual-domain attention mechanism to better capture complex tumor structures.
+Because medical datasets are small, they add a variational autoencoder (VAE) branch that reconstructs the input image. This acts as a regularizer, helping the model generalize better.
+- https://arxiv.org/abs/2007.06959v1 ##it’s not a Transformer — it’s a 3D CNN-based model, but trained with a novel self-supervised strategy to learn anatomical semantics.
+Architecture = 3D U-Net backbone
+Innovation = self-supervised semantic learning framework
+score:
+dice score around 0.9
+----------------------------------
+
+training loop with pytorch:
+
+- 1 load the dataset
+- 2 model init 
+- 3 loss func 
+- 4 opt / scheduler 
+- 5 use GPU
+- 6 training loop 
+Set model.train()
+Loop over batches:
+Forward pass: outputs = model(inputs)
+Compute loss: loss = criterion(outputs, masks)
+Backprop: loss.backward()
+Optimizer step: optimizer.step()
+Zero gradients: optimizer.zero_grad()
+Track metrics (Dice, IoU) per epoch
+- 7 validation 
+---------------------------------
+
+Learn how to load dataset for pyTorch:
+from torch.utils.data import Dataset
+
+class MyDataset(Dataset):   # inheritance
+    def __init__(self, images, masks):
+        self.images = images
+        self.masks = masks
+
+    def __len__(self):
+        return len(self.images)  # must implement
+
+    def __getitem__(self, idx):
+        # must implement: return sample at idx
+        return self.images[idx], self.masks[idx]
+
