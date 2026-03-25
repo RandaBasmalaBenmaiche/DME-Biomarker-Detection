@@ -1,91 +1,90 @@
-# Dataset – Cystoid Spaces (Logettes) Detection
+# Cystoid Spaces (Logettes) Detection & Segmentation
 
 ## Overview
 
-Cystoid spaces (logettes) are **dark circular or oval regions** observed in OCT images, representing **fluid accumulation within the retinal layers**. They are a key biomarker of **Diabetic Macular Edema (DME)**, as their presence, size, and distribution correlate with disease severity and the risk of vision loss.
+Cystoid spaces (logettes) are **dark circular or oval regions** observed in OCT images, representing **fluid accumulation within the retinal layers**. They are a key biomarker of **Diabetic Macular Edema (DME)**.
 
-This dataset is curated to support **detection, segmentation, quantification, and longitudinal analysis** of cystoid spaces using state-of-the-art deep learning models. It combines multiple sources to provide diversity and robustness for model training and evaluation.
+This project focuses on the **automated segmentation and quantification** of these spaces using a deep learning approach trained on a multi-source dataset, including primary clinical data from Algeria.
 
----
+-----
+
+## Model & Training
+
+I implemented a **U-Net** architecture with a **ResNet-34** encoder using the `segmentation-models-pytorch` library.
+
+### 1\. Preprocessing & Data Uniformity
+
+To handle the brightness and contrast variations across different OCT machines, I applied a custom normalization strategy:
+
+  * **Target Statistics:** Normalization was performed using a **Target Mean of 0.4** and **Target Std of 0.2**, derived from the Tizi Ouzou hospital datasets.
+  * **No Clipping:** During training, `np.clip` was intentionally omitted to preserve diagnostic details in the pixel value distribution tails.
+  * **Smart Resizing:** Images were resized to **512x512** using a "Longest Max Size" strategy with padding to maintain the original anatomical aspect ratio.
+
+### 2\. Training Environment
+
+  * **Hardware:** Google Colab (NVIDIA T4 GPU).
+  * **Parameters:** 15 Epochs (\~20 mins training time).
+  * **Loss Function:** Combination of Dice and Binary Cross-Entropy (BCE).
+
+-----
+
+## Results
+
+The model demonstrated strong generalization capabilities on unseen clinical data from the Tizi Ouzou province.
+
+| Dataset Source | Metric | Value |
+| :--- | :--- | :--- |
+| **Validation Set** | Mean Dice Score | **0.8478** |
+| **Hospital (324)** | Mean Dice / IoU | 0.7424 / 0.6230 |
+| **Hospital (75)** | Mean Dice / IoU | 0.6938 / 0.5864 |
+
+### Visual Predictions
+
+Below are 5 random samples comparing the input image, the manual ground truth, and the model's prediction:
+
+![Model Predictions test on TO 72](biomarkers/cystoid_spaces/assets/1.png)
+![Model Predictions test on TO 324](biomarkers/cystoid_spaces/assets/2.png)
+
+-----
 
 ## Data Sources
 
-This dataset is composed of **three complementary sources**:
+### 1\. Hospital Dataset – Tizi Ouzou, Algeria (Primary & Secondary)
 
-### .1 Hospital Dataset – Tizi Ouzou, Algeria (Primary)
+  * **Source:** Ophthalmology Department, Tizi Ouzou Province.
+  * **Details:** 324 scans (Primary) + 75 scans (Secondary).
+  * **Annotations:** Clinically validated for cystoid spaces.
 
-* **Source:** Ophthalmology Department, Tizi Ouzou Province
-* **Patients:** 69
-* **Images:** 324 OCT scans
-* **Anonymization:** Images renamed as `PATIENTNUMBER_OCTSCANNUMBER_POSITION`, where `POSITION` is `b` for bottom-eye images and `t` for top-eye images. Bottom corresponds to one eye and top corresponds to the other eye.
-* **Annotations:**
+### 2\. Kaggle Dataset
 
-  * 128 OCT scans annotated for cystoid spaces
-  * Full annotation for **11 patients** (all their scans)
-  * Partial annotation for **24 patients** (some scans left unannotated due to clinical workload constraints)
-* **Notes:** This dataset represents **clinically validated annotations** while balancing hospital staff limitations. It is suitable for segmentation, detection, and quantification of cystoid spaces.
+  * **Source:** [Intraretinal Cystoid Fluid OCT Dataset](https://www.kaggle.com/datasets/zeeshanahmed13/intraretinal-cystoid-fluid)
+  * **Images:** 1609 OCT scans (Manually annotated).
 
-### .2 Hospital Dataset – Tizi Ouzou, Algeria (Secondary)
+| Source | Total Scans | Annotated | Full Annotation |
+| :--- | :--- | :--- | :--- |
+| Tizi Ouzou (Primary) | 324 | 128 | 11 patients |
+| Tizi Ouzou (Secondary)| 75 | 72 | N/A |
+| Kaggle | 1609 | 1609 | N/A |
 
-* **Source:** Ophthalmology Department, Tizi Ouzou Province
-* **Images:** 75 OCT scans
-* **Patients:** Unknown
-* **Annotations:** 72 scans annotated for cystoid spaces
-* **Notes:** This dataset is used as **additional training and validation data**. Annotations were carefully curated to ensure quality despite missing patient metadata.
+-----
 
-### .3 Kaggle Dataset
+## Future Work
 
-* **Source:** [Intraretinal Cystoid Fluid OCT Dataset](https://www.kaggle.com/datasets/zeeshanahmed13/intraretinal-cystoid-fluid)
-* **Images:** 1609 OCT scans
-* **Annotations:** 1609 scans manually annotated for cystoid spaces
-* **License:** Attribution-NonCommercial-ShareAlike 4.0 International
-* **Notes:** This external dataset provides **large-scale supplementary images** to improve model generalization across varied imaging conditions.
+  * **Augmentation:** Adding Elastic Transforms and Grid Distortions to increase anatomical robustness.
+  * **Architecture:** Experimenting with Attention U-Net and deeper backbones (ResNet-50).
+  * **Error Analysis:** Detailed investigation into "false negatives" in images with very small cystoid clusters.
 
----
+-----
 
-##  Annotation Summary
+## Access & Ethics
 
-| Source                 | Total Scans | Annotated Scans | Full Annotation | Partial Annotation |
-| ---------------------- | ----------- | --------------- | --------------- | ------------------ |
-| Tizi Ouzou – 324 scans | 324         | 128             | 11 patients     | 24 patients        |
-| Tizi Ouzou – 75 scans  | 75          | 72              | N/A             | N/A                |
-| Kaggle – 1609 scans    | 1609        | 1609            | N/A             | N/A                |
+  * **Model:** The best performing model weights (`best_model.pth`) are available in the `/models` directory.
+  * **Data Privacy:** Hospital datasets are anonymized and available **strictly upon request** for research purposes.
+  * **Contact:** Reach out via email at `randa.cs.acc@gmail.com` for access or collaboration.
 
-> “Full annotation” indicates that **all scans of the patient were annotated**, while “partial annotation” means **only some scans were annotated**. This limitation reflects the practical constraints of hospital clinical staff.
-
----
-
-## Data Organization
-
-```
-cystoid_spaces/
-├── data/
-│   ├── hospital_324/
-│   │   ├── images/
-│   │   └── annotations/
-│   ├── hospital_75/
-│   │   ├── images/
-│   │   └── annotations/
-│   └── kaggle/
-│       ├── images/
-│       └── annotations/
-├── notebooks/            # Exploration & preprocessing scripts
-├── models/               # Trained or baseline models
-├── experiments/          # Training experiments & results
-└── README.md             # Dataset description
-```
-## Ethical Considerations and Licensing
-
-* **Hospital Datasets:** Anonymized  for research purposes
-* **Kaggle Dataset:** Non-commercial research use under [Attribution-NonCommercial-ShareAlike 4.0 International](https://www.kaggle.com/datasets/zeeshanahmed13/intraretinal-cystoid-fluid)
-* **Disclaimer:** Intended **strictly for research and educational purposes**, not for clinical diagnosis
-
----
+-----
 
 ## References
 
-1. Nouri, Pr. et al., “Prevalence and management of diabetic macular edema in Algeria,” *Journal of Ophthalmology*, 2021
-2. Kaggle: [Intraretinal Cystoid Fluid OCT Dataset](https://www.kaggle.com/datasets/zeeshanahmed13/intraretinal-cystoid-fluid)
-
-
-
+1.  Nouri, Pr. et al., “Prevalence and management of diabetic macular edema in Algeria,” *Journal of Ophthalmology*, 2021.
+2.  Kaggle: [Intraretinal Cystoid Fluid OCT Dataset](https://www.kaggle.com/datasets/zeeshanahmed13/intraretinal-cystoid-fluid).
