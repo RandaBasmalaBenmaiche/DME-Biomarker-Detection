@@ -1,11 +1,11 @@
-train_images: "/content/split_output/split_output/train/images"
-train_masks: "/content/split_output/split_output/train/masks"
-val_images: "/content/split_output/split_output/val/images"
-val_masks: "/content/split_output/split_output/val/masks"
-device: "cuda"  # or "cpu"
+train_images: "/content/split_output/Medical_dataset/train/images"
+train_masks: "/content/split_output/Medical_dataset/train/masks"
+val_images: "/content/split_output/Medical_dataset/val/images"
+val_masks: "/content/split_output/Medical_dataset/val/masks"
+device: "cuda"  
 in_channels: 1
 out_classes: 1
 batch_size: 16
 lr: 1e-4
-epochs: 3
+epochs: 15
 checkpoint_dir: "outputs/checkpoints"
