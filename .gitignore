@@ -1,6 +1,10 @@
-biomarkers/cystoid_spaces/data_raw/
-biomarkers/cystoid_spaces/data_split/
-biomarkers/cystoid_spaces/experiments/
-biomarkers/cystoid_spaces/processing/
-Medical_dataset.zip
-Medical_dataset/
+data
+biomarkers\cystoid_spaces\models\AttentionUNet\best_model
+biomarkers\cystoid_spaces\models\U-net\best_model
+biomarkers\cystoid_spaces\models\UNet++\best_model
+biomarkers\DRIL\models\best_models
+biomarkers\hyper_reflective_dots\models\U-net\best_model
+docs\
+*.pth
+**\best_model\
+**\Models\

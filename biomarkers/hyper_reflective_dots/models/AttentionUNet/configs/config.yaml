@@ -1,0 +1,23 @@
+# Data paths (after running split_dataset.py)
+train_images: "/content/data/split_dataset/train/images"
+train_heatmaps: "/content/data/split_dataset/train/heatmaps"
+val_images: "/content/data/split_dataset/val/images"
+val_heatmaps: "/content/data/split_dataset/val/heatmaps"
+test_images: "/content/data/split_dataset/test/images"
+test_heatmaps: "/content/data/split_dataset/test/heatmaps"
+
+# Model config
+in_channels: 1
+out_classes: 1
+
+# Training config
+batch_size: 16
+lr: 1e-4
+epochs: 50
+seed: 42
+
+# Image config
+target_size: 512
+
+# Output
+checkpoint_dir: "output/checkpoints"

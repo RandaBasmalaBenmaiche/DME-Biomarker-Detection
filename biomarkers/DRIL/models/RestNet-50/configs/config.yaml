@@ -1,0 +1,8 @@
+data_dir: "/content/RestNet-50/dataset/data"   # root folder with class subfolders
+batch_size: 8
+lr: 0.0001
+epochs: 20
+num_classes: 2
+image_size: 224
+class_counts: [1054, 556]
+save_dir: "/content"
