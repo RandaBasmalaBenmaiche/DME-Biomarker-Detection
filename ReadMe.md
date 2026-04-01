@@ -124,7 +124,7 @@ For severity assessment and feature extraction:
 | Test       | **TODO** | **TODO** | Noise and annotation quality affect results |
 
 **Visualization:**
-![Hyperreflective Dots Heatmap Example](docs\assets\image.png)
+![Hyperreflective Dots Heatmap Example](docs/assets/image.png)
 
 > Heatmap regression for detecting small hyperreflective dots; current model handles some but misses others due to annotation quality.
 
