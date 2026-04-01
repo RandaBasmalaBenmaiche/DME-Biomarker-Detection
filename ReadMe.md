@@ -1,222 +1,314 @@
-# 🧬 DME-Biomarker-Detection: Detection, Quantification, and Longitudinal Analysis of Diabetic Macular Edema Biomarkers in OCT Images
+# 🧬 Detection, Quantification, and Longitudinal Analysis of Diabetic Macular Edema Biomarkers in OCT Images
 
-A research-driven project exploring deep learning approaches for the detection and quantification of Diabetic Macular Edema (DME) biomarkers in OCT images, aiming to support clinical decision-making and improve ophthalmic diagnostics.
-
----
-
-## 1. Introduction
-
-Diabetic Macular Edema (DME) is one of the most severe complications of diabetes and a leading cause of vision impairment worldwide. In Algeria, the prevalence of this pathology represents a major public health challenge. According to Prof. Nouri, head of department at Beni Messous Hospital, approximately 12% of adult diabetic patients suffer from diabetic retinopathy, and 42% of these patients develop DME, a severe form of diabetic retinopathy.
-
-The management of DME is complex and costly, placing a significant burden on healthcare systems. Accurately assessing the evolution of the disease over time is essential to determine whether a patient’s treatment is effective or requires adjustment. Traditional clinical workflows rely heavily on manual interpretation of OCT images by ophthalmologists, which is time-consuming and subject to inter-observer variability.
-
-Artificial Intelligence (AI) offers a promising solution to improve early detection, severity assessment, and monitoring of DME. By leveraging deep learning techniques for medical image analysis, AI systems can provide precise, reproducible, and quantitative evaluations of retinal biomarkers. This project proposes an end-to-end deep learning framework for the automated detection, quantification, and temporal comparison of DME-related biomarkers in OCT images, with the objective of supporting ophthalmologists in diagnosis and follow-up of patients.
+A research-oriented deep learning framework for automated analysis of Diabetic Macular Edema (DME) using Optical Coherence Tomography (OCT), focusing on biomarker detection, quantification, and temporal disease monitoring.
 
 ---
 
-## 2. Motivation and Impact
+## 1. Clinical Background
 
-Monitoring disease progression is critical in chronic pathologies such as DME. Beyond detecting biomarkers in a single image, this project introduces a longitudinal analysis approach that compares OCT images acquired at different time points during a patient’s treatment.
+Diabetic Macular Edema (DME) is a vision-threatening complication of diabetic retinopathy and represents one of the leading causes of blindness among diabetic patients worldwide.
 
-By comparing successive OCT scans of the same patient, the system can:
+Pathophysiologically, DME is characterized by the accumulation of extracellular fluid within the macula due to the breakdown of the blood-retinal barrier. This results in structural alterations of retinal layers, which can be visualized using Optical Coherence Tomography (OCT).
 
-* Determine whether the patient’s condition is improving, worsening, or remaining stable.
-* Quantify changes in retinal biomarkers over time.
-* Provide objective indicators to support therapeutic decision-making.
-* Reduce subjectivity in clinical evaluation.
+Clinically, the assessment of DME relies on the identification of several key biomarkers:
 
-From both a clinical and research perspective, this project explores the integration of computer vision, medical imaging, and temporal analysis, contributing to the development of intelligent systems capable of dynamic disease monitoring rather than static diagnosis.
+* **Cystoid Spaces (Intraretinal Fluid)**
+  Hyporeflective cavities within the retina indicating fluid accumulation.
+
+* **Disorganization of Retinal Inner Layers (DRIL)**
+  Loss of distinguishable boundaries between inner retinal layers, associated with poor visual prognosis.
+
+* **Hyperreflective Dots (HRD)**
+  Small, highly reflective foci believed to correspond to lipid exudates, inflammatory cells, or debris.
+
+Accurate identification and monitoring of these biomarkers are essential for:
+
+* Evaluating disease severity
+* Guiding treatment decisions
+* Assessing therapeutic response over time
+
+However, manual interpretation of OCT images is:
+
+* Time-consuming
+* Operator-dependent
+* Subject to inter-observer variability
+
+This motivates the development of automated, quantitative, and reproducible analysis systems.
+
+---
+
+## 2. Research Motivation
+
+While most existing works focus on **static detection** of retinal abnormalities, clinical practice requires **longitudinal understanding** of disease evolution.
+
+This project is motivated by the need to move from:
+
+> **“What is present in this scan?”**
+> to
+> **“How is the disease evolving over time?”**
+
+The proposed system aims to:
+
+* Detect multiple biomarkers automatically
+* Quantify their structural properties
+* Enable future temporal comparison between patient visits *(ongoing work)*
 
 ---
 
 ## 3. Objectives
 
-The main objectives of this project are:
+The main objectives of this work are:
 
-1. Develop an AI-based system for detecting DME-related biomarkers in OCT images.
-2. Quantify retinal structural abnormalities associated with DME.
-3. Implement a longitudinal comparison module to analyze disease progression over time.
-4. Evaluate multiple deep learning architectures for detection, segmentation, and classification tasks.
-5. Design a medically meaningful severity scoring function based on expert knowledge (**TODO**).
-6. Provide a robust and extensible framework for future research in medical AI.
-
----
-
-## 4. Proposed AI Solution
-
-### 4.1 Overview of the Approach
-
-The proposed solution analyzes OCT images acquired at different stages of a patient’s treatment. For each patient, the system processes multiple OCT scans and extracts quantitative information about retinal biomarkers. These outputs are then compared across time to determine the evolution of the disease.
-
-### 4.2 Biomarkers of Interest
-
-1. **Disorganization of Retinal Inner Layers (DRIL)** – Loss of clear boundaries between the inner retinal layers, indicating disease progression.
-2. **Discontinuity of the Ellipsoid Zone and External Limiting Membrane (ELM)** – Disruptions in photoreceptor layers linked to visual impairment.
-3. **Cystoid Spaces (Intraretinal Cysts)** – Dark circular regions; size, distribution, and volume indicate edema severity.
-4. **Hyperreflective Foci** – Small bright spots indicating pathological changes and inflammation.
-
-For each biomarker, specialized deep learning models are selected and optimized for detection and quantification.
+1. Develop automated methods for detecting DME-related biomarkers in OCT images
+2. Compare multiple deep learning architectures across tasks
+3. Quantify biomarker characteristics (area, count, distribution) *(TODO)*
+4. Establish a foundation for longitudinal disease monitoring *(TODO)*
+5. Design a clinically meaningful severity scoring system *(TODO)*
 
 ---
 
-## 5. Models & Methodology
+## 4. Methodology
 
-### 5.1 Object Detection Models
+### 4.1 Problem Decomposition
 
-Primarily for hyperreflective foci and localized abnormalities:
+The problem is decomposed into three complementary tasks:
 
-* YOLO (v1–v8)
-* SSD (Single Shot MultiBox Detector)
-* RetinaNet
-* R-CNN family
+| Biomarker | Task Type      | Modeling Approach                 |
+| --------- | -------------- | --------------------------------- |
+| Cystoids  | Segmentation   | Pixel-wise prediction             |
+| DRIL      | Classification | Image-level binary classification |
+| HRD       | Regression     | Heatmap prediction                |
 
-### 5.2 Segmentation Models
-
-For pixel-level segmentation of cystoid spaces and fluid regions:
-
-* U-Net and its variants
-* Other encoder–decoder architectures
-
-### 5.3 Classification Models
-
-For severity assessment and feature extraction:
-
-* ResNet
-* EfficientNet
-* Custom CNN architectures
-
-### 5.4 Results & Visualizations
-
-#### Cystoid Spaces Segmentation
-
-| Model               | Dataset      | Mean Dice       | Mean IoU        | Notes                                      |
-| :------------------ | :----------- | :-------------- | :-------------- | :----------------------------------------- |
-| **U-Net**           | Validation   | 0.8478          | **TODO**        | Good segmentation, minor over-segmentation |
-|                     | Hospital 324 | 0.7424          | 0.6230          | Slight performance drop on external data   |
-|                     | Hospital 75  | 0.6938          | 0.5864          | Limited data, more augmentation needed     |
-| **U-Net++**         | 324          | 0.6220          | 0.5158          | Underfitting observed                      |
-|                     | 72           | 0.6946          | 0.5899          | Comparable to baseline                     |
-| **Attention U-Net** | 324          | 0.6558 ± 0.2664 | 0.5369 ± 0.2516 | High variance across images                |
-|                     | 72           | 0.6400 ± 0.2819 | 0.5242 ± 0.2625 | Needs more data                            |
-
-**Visualization:**
-![Cystoid Segmentation Example](docs/assets/1.png)
-
-> Over-segmentation observed in larger cystoids; external datasets show lower performance.
-
-#### DRIL Classification
-
-| Dataset    | Accuracy | F1-Score | ROC-AUC  | Notes                                           |
-| :--------- | :------- | :------- | :------- | :---------------------------------------------- |
-| Validation | **TODO** | **TODO** | **TODO** | Weighted loss applied to handle class imbalance |
-| Test       | **TODO** | **TODO** | **TODO** | Needs full testing                              |
-
-**Visualization Placeholder:**
-
-
-> Binary classification — 795 positive, 1507 negative labels; testing is pending.
-
-#### Hyperreflective Dots Detection
-
-| Dataset    | Dice     | MSE      | Notes                                       |
-| :--------- | :------- | :------- | :------------------------------------------ |
-| Validation | **TODO** | **TODO** | Small object detection challenging          |
-| Test       | **TODO** | **TODO** | Noise and annotation quality affect results |
-
-**Visualization:**
-![Hyperreflective Dots Heatmap Example](docs/assets/image.png)
-
-> Heatmap regression for detecting small hyperreflective dots; current model handles some but misses others due to annotation quality.
-
-#### Severity & Quantitative Biomarker Analysis
-
-| Biomarker            | Quantification Method | Status                              |
-| :------------------- | :-------------------- | :---------------------------------- |
-| Cystoids             | Surface area, count   | **TODO: formula & implementation**  |
-| DRIL                 | Binary label          | **TODO: testing & scoring formula** |
-| Hyperreflective Dots | Dot count, intensity  | **TODO: testing & formula**         |
-
-**Longitudinal Visualization Placeholder:**
-![Patient Longitudinal Analysis Example](path/to/longitudinal_analysis_example.png)
-
-> Temporal comparisons of biomarker changes over multiple OCT scans; formulas for scoring and longitudinal metrics are in progress.
+📌 **Methodological Note**
+DRIL is modeled as classification rather than segmentation to reduce annotation complexity and improve training feasibility. This choice will be further justified in future work.
 
 ---
 
-## 6. Dataset
+### 4.2 Model Architectures
 
-### 6.1 Data Description
+#### Segmentation
 
-The dataset consists of **1556 annotated OCT images** collected from clinical collaborators and public sources. Expert annotations were provided by ophthalmologists. The data is split as follows:
+* U-Net
+* U-Net++
+* Attention U-Net
 
-* 70% Train
-* 15% Validation
-* 15% Test
+#### Classification
 
-**DRIL labels:** 795 positive, 1507 negative. Weighted loss is used during training to handle class imbalance.
+* ResNet18
+* ResNet50
+* EfficientNet-B0
 
-### 6.2 Preprocessing
+#### Regression (HRD)
 
-* Image normalization and resizing
+* CNN-based heatmap regression *(implementation ongoing)*
+
+---
+
+### 4.3 Training Setup
+
+* Framework: PyTorch
+* Input resolution: 512 × 512
+* Threshold: 0.5
+
+#### Loss Functions
+
+* Segmentation: Binary Cross-Entropy (BCE)
+* Regression: Mean Squared Error (MSE)
+* Combined loss: *(TODO: define formal equation)*
+
+---
+
+Got it! Here's a **revised, clear, and complete Dataset section** for your README, covering **all three biomarkers** with the details you provided:
+
+---
+
+## 5. Dataset
+
+The datasets used in this project consist of OCT images annotated for **three biomarkers**: Cystoid Spaces, DRIL, and Hyperreflective Dots (HRD). Images were collected from public sources (Kaggle, deep web) and hospital collaborators, and annotations were performed by **two ophthalmologists and one bioinformatics intern**.
+
+All data is **anonymized** and preprocessed to comply with privacy regulations.
+
+---
+
+### 5.1 Cystoid Spaces Segmentation
+
+| Dataset            | Total Images | Annotated Images | Annotation Type |
+| :----------------- | :----------- | :--------------- | :-------------- |
+| Kaggle OCT dataset | 1460         | 1460             | Unknown         |
+| Hospital Dataset 1 | 324          | 128              | Polygon (CVAT)  |
+| Hospital Dataset 2 | 75           | 62               | Polygon (CVAT)  |
+
+* **Image size:** 512 × 512
+* **Notes:** Only annotated images were used for training/validation. Polygons were converted into binary masks for segmentation.
+
+---
+
+### 6.2 DRIL Classification
+
+| Dataset              | Total Images | Annotated Images | Annotation Type |
+| :------------------- | :----------- | :--------------- | :-------------- |
+| Deep web OCT dataset | 11,000       | 2,302            | Binary labels   |
+
+* **Class Distribution:**
+
+  * Positive (DRIL present): 795
+  * Negative (DRIL absent): 1,507
+* **Image size:** 224 × 224
+* **Notes:** Weighted loss used to handle class imbalance.
+
+---
+
+### 6.3 Hyperreflective Dots Detection
+
+| Dataset              | Total Images | Annotated Images | Annotation Type   |
+| :------------------- | :----------- | :--------------- | :---------------- |
+| Deep web OCT dataset | 11,000       | 1,556            | Points → Heatmaps |
+
+* **Image size:** 512 × 512
+* **Notes:** Annotations were points manually placed; heatmaps were generated from these points for model training.
+
+---
+
+### 6.4 Preprocessing & Augmentation
+
+All datasets undergo consistent preprocessing to ensure robustness across models:
+
+* Image normalization
+* Resizing to 512×512 (Cysts, HRD) or 224×224 (DRIL)
+* Data augmentation: rotation, flipping, contrast adjustment
 * Noise reduction
-* Data augmentation (rotation, flipping, contrast enhancement)
-* Annotation formatting for deep learning models
 
-Due to ethical and privacy considerations, parts of the dataset may not be publicly accessible. All patient data is anonymized.
+---
+## 6. Results
+
+### 6.1 Cystoid Segmentation
+
+#### Dataset 72 (Test Set: 10 images)
+
+| Model           | Dice   | IoU    | Precision | Recall |
+| --------------- | ------ | ------ | --------- | ------ |
+| Attention U-Net | 0.6768 | 0.5115 | 0.8907    | 0.5458 |
+| U-Net           | 0.8491 | 0.7378 | 0.8265    | 0.8730 |
+| U-Net++         | 0.8495 | 0.7384 | 0.7925    | 0.9153 |
+
+#### Dataset 324 (Test Set: 20 images)
+
+| Model           | Dice       | IoU        | Precision | Recall |
+| --------------- | ---------- | ---------- | --------- | ------ |
+| Attention U-Net | 0.7145     | 0.5558     | 0.7675    | 0.6683 |
+| U-Net           | **0.7645** | **0.6188** | 0.7613    | 0.7677 |
+| U-Net++         | 0.7309     | 0.5759     | 0.7371    | 0.7247 |
+
+#### Observations
+
+* U-Net demonstrates the most stable performance across datasets
+* U-Net++ increases recall but introduces more false positives
+* Attention U-Net shows high precision but low sensitivity
 
 ---
 
-## 7. Longitudinal Analysis: Disease Progression Monitoring
+### 6.2 DRIL Classification
 
-The system compares OCT images acquired at different time points to:
+#### Best Model: ResNet50 (Full Fine-Tuning)
 
-* Measure variations in biomarker size, shape, and intensity.
-* Quantify progression or regression of retinal abnormalities.
-* Generate a temporal profile of disease evolution.
+* Accuracy: **0.8818**
+* F1-Score: **0.8611**
+* ROC-AUC: **0.9315**
+* Sensitivity: 0.7167
+* Specificity: 0.9692
 
-**Longitudinal scoring formula:** **TODO**
+#### Observations
 
----
-
-## 8. Evaluation Metrics
-
-Performance is evaluated using clinically relevant metrics:
-
-* Precision, Recall, and F1-score
-* Intersection over Union (IoU)
-* Mean Average Precision (mAP)
-* Dice Coefficient (for segmentation)
-* Accuracy and ROC-AUC (for classification)
-* Temporal consistency metrics for longitudinal analysis
+* High specificity indicates strong performance on healthy cases
+* Lower sensitivity highlights difficulty in detecting DRIL
+* Model performance is sensitive to training strategy
 
 ---
 
-## 9. Challenges and Limitations
+### 6.3 Hyperreflective Dots (HRD)
 
-* Limited availability of annotated medical data
-* Class imbalance among biomarkers
-* Variability in OCT image quality
-* Generalization across different devices and populations
-* Some formulas for quantification and longitudinal scoring are still under development
+| Metric | Value |
+| ------ | ----- |
+| Dice   | TODO  |
+| MSE    | TODO  |
+
+#### Observations
+
+* Detection of small structures remains challenging
+* Performance highly dependent on annotation quality
+
+---
+
+### 6.4 Key Insights
+
+* Simpler architectures (U-Net) outperform more complex variants
+* Small-scale features (HRD) are the most difficult to model
+* Class imbalance significantly impacts classification performance
+* Trade-offs between precision and recall vary by architecture
+
+---
+
+## 7. Quantification & Clinical Interpretation *(Future Work)*
+
+The project aims to move beyond detection toward **quantitative biomarkers**:
+
+| Biomarker | Planned Metric                    |
+| --------- | --------------------------------- |
+| Cystoids  | Surface area, count               |
+| DRIL      | Binary presence + extent *(TODO)* |
+| HRD       | Dot count, intensity              |
+
+📌 Severity scoring function: **TODO**
+
+---
+
+## 8. Longitudinal Analysis *(Future Work)*
+
+A key objective is to enable comparison between OCT scans across time:
+
+* Detect changes in biomarker size and distribution
+* Quantify progression or regression
+* Provide objective indicators for treatment response
+
+📌 Longitudinal scoring: **TODO**
+
+---
+
+## 9. Limitations
+
+* Limited dataset size
+* Class imbalance
+* Variability in OCT acquisition conditions
+* Absence of clinical validation
+* Incomplete quantification framework *(ongoing)*
 
 ---
 
 ## 10. Future Work
 
-* Integrating the fourth biomarker 
-* Integration of multimodal clinical data (OCT + patient metadata)
-* Deployment in real-world clinical environments
-* Validation through large-scale clinical studies
+* Define severity scoring formula
+* Improve HRD detection (small object problem)
+* Integrate multi-biomarker analysis
+* Extend to longitudinal patient tracking
+* Validate with larger clinical datasets
 
 ---
 
-## 11. Disclaimer
+## 11. Implementation
 
-This project is intended for **research and educational purposes only**. It is not designed for clinical use or medical diagnosis yet.
+For more details:
+
+👉 See [`/docs`](./docs)
 
 ---
 
-## 12. Author
+## 12. Disclaimer
+
+This project is intended for **research and educational purposes only** and is not approved for clinical use.
+
+---
+
+## 13. Author
 
 **Randa Benmaiche**
 AI Student | Computer Vision & Medical Imaging
