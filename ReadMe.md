@@ -118,10 +118,6 @@ DRIL is modeled as classification rather than segmentation to reduce annotation 
 
 ---
 
-Got it! Here's a **revised, clear, and complete Dataset section** for your README, covering **all three biomarkers** with the details you provided:
-
----
-
 ## 5. Dataset
 
 The datasets used in this project consist of OCT images annotated for **three biomarkers**: Cystoid Spaces, DRIL, and Hyperreflective Dots (HRD). Images were collected from public sources (Kaggle, deep web) and hospital collaborators, and annotations were performed by **two ophthalmologists and one bioinformatics intern**.
