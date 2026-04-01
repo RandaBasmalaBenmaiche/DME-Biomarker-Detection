@@ -99,8 +99,8 @@ For severity assessment and feature extraction:
 | **Attention U-Net** | 324          | 0.6558 ± 0.2664 | 0.5369 ± 0.2516 | High variance across images                |
 |                     | 72           | 0.6400 ± 0.2819 | 0.5242 ± 0.2625 | Needs more data                            |
 
-**Visualization Placeholder:**
-![Cystoid Segmentation Example](path/to/cystoid_segmentation_example.png)
+**Visualization:**
+![Cystoid Segmentation Example](docs/assets/1.png)
 
 > Over-segmentation observed in larger cystoids; external datasets show lower performance.
 
@@ -112,7 +112,7 @@ For severity assessment and feature extraction:
 | Test       | **TODO** | **TODO** | **TODO** | Needs full testing                              |
 
 **Visualization Placeholder:**
-![DRIL Classification Example](path/to/dril_classification_example.png)
+
 
 > Binary classification — 795 positive, 1507 negative labels; testing is pending.
 
@@ -123,8 +123,8 @@ For severity assessment and feature extraction:
 | Validation | **TODO** | **TODO** | Small object detection challenging          |
 | Test       | **TODO** | **TODO** | Noise and annotation quality affect results |
 
-**Visualization Placeholder:**
-![Hyperreflective Dots Heatmap Example](path/to/hrd_heatmap_example.png)
+**Visualization:**
+![Hyperreflective Dots Heatmap Example](docs\assets\image.png)
 
 > Heatmap regression for detecting small hyperreflective dots; current model handles some but misses others due to annotation quality.
 
