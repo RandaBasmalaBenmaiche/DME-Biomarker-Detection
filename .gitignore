@@ -8,3 +8,4 @@ docs\
 *.pth
 **\best_model\
 **\Models\
+docs\thoughts.txt
